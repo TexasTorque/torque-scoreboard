@@ -1,12 +1,12 @@
-# Project Name
+# torque-scoreboard
 
-A short description about the project.
+torque-scoreboard is a score-keeping app for the 2024 FRC Game Crescendo.
 
 For all questions, comments, or concerns, reach out to [Davey Adams \<davey.adams.three@gmail.com\>](https://github.com/humandavey).
 
 ## Code
 
-Project is written in TypeScript.
+torque-scoreboard is written in TypeScript.
 The frontend uses ReactJS and the backend uses Express.
 Firestore is used as the database.
 

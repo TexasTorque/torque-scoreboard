@@ -1,5 +1,5 @@
 {
-  "name": "<name>-server",
+  "name": "torque-scoreboard-server",
   "version": "1.0",
   "private": true,
   "author": "Davey Adams",

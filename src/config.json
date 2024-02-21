@@ -1,9 +1,9 @@
 {
-  "apiKey": "*****",
-  "authDomain": "*****.firebaseapp.com",
-  "projectId": "*****",
-  "storageBucket": "*****.appspot.com",
-  "messagingSenderId": "*****",
-  "appId": "*****",
-  "measurementId": "*****"
+  "apiKey": "AIzaSyCxEsdzofvhbMK7yLsIUHP5aMjPL6S2bbo",
+  "authDomain": "torque-scoreboard.firebaseapp.com",
+  "projectId": "torque-scoreboard",
+  "storageBucket": "torque-scoreboard.appspot.com",
+  "messagingSenderId": "855129749581",
+  "appId": "1:855129749581:web:9e3acd1d5e91c73c524404",
+  "measurementId": "G-1HY6V6LNPB"
 }
