@@ -1,0 +1,28 @@
+@font-face {
+  font-family: "Roboto-Bold";
+  src: local("Roboto-Bold"), url("./fonts/Roboto-Bold.ttf") format("truetype");
+  font-weight: bold;
+}
+
+.template-img {
+  background-image: url("./img/template.png");
+}
+
+p {
+  font-family: Roboto-Bold;
+}
+
+.qual-info {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  color: white;
+  width: 100%;
+  text-align: center;
+}
+
+.score {
+  position: absolute;
+  color: white;
+  text-align: center;
+}
