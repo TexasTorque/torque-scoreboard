@@ -26,3 +26,18 @@ p {
   color: white;
   text-align: center;
 }
+
+.team-number {
+  position: absolute;
+  color: white;
+}
+
+.stat {
+  color: rgb(16,24,32);
+  position: absolute;
+  text-align: center;
+}
+
+body::-webkit-scrollbar { 
+  display: none;
+}
