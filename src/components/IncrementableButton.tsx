@@ -5,11 +5,12 @@ interface IncrementableButtonProps {
   label: string;
   increment: number;
   scale: number;
+  defaultValue: number;
   style: React.CSSProperties;
 }
 
 export default (props: IncrementableButtonProps) => {
-  const [count, setCount] = useState<number>(0);
+  const [count, setCount] = useState<number>(props.defaultValue);
 
   return (
     <>

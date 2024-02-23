@@ -3,6 +3,7 @@ import {
   doc,
   getDoc,
   getFirestore,
+  setDoc,
 } from "firebase/firestore";
 import * as firebaseConfig from './config.json';
 import { BlueAlliance, RedAlliance, Score } from "./data/Types";
@@ -32,4 +33,19 @@ export const getRedAlliance = async (): Promise<RedAlliance> => {
   const ref = doc(db, "scoreboard", "redalliance");
   const snapshot = await getDoc(ref);
   return snapshot.data() as RedAlliance;
+}
+
+export const sumScore = (score: Score | undefined): number => {
+  if (score) return score.amp + score.autoamp + score.autospeaker + score.leave + score.speaker + score.speakeramplified + score.stage;
+  return 0;
+}
+
+export const setRedAlliance = async (redalliance: RedAlliance | undefined) => {
+  const ref = doc(db, "scoreboard", "redalliance");
+  await setDoc(ref, redalliance);
+}
+
+export const setBlueAlliance = async (bluealliance: BlueAlliance | undefined) => {
+  const ref = doc(db, "scoreboard", "bluealliance");
+  await setDoc(ref, bluealliance);
 }

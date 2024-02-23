@@ -1,26 +1,10 @@
-// export interface Match {
-//   red: Alliance;
-//   blue: Alliance;
-//   matchStart: number;
-// }
-
-// export interface Alliance {
-//   teams: Team[];
-//   score: number;
-//   coopertition: boolean;
-//   superchargeStart: number;
-// }
-
-// export interface Team {
-//   name: string;
-//   number: number;
-// }
-
 export interface Score {
   amp: number;
+  autoamp: number;
+  autospeaker: number;
   leave: number;
-  penalty: number;
   speaker: number;
+  speakeramplified: number;
   stage: number;
 }
 
