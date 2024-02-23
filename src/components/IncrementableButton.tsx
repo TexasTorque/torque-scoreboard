@@ -15,7 +15,6 @@ export default (props: IncrementableButtonProps) => {
   const [count, setCount] = useState<number>(props.defaultValue);
 
   useEffect(() => {
-    console.log(props);
     props.update(props.keyd, count);
   }, [count]);
 
