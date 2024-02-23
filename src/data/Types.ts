@@ -1,5 +1,5 @@
 export interface Score {
-  amp: number;
+  [amp: string]: number;
   autoamp: number;
   autospeaker: number;
   leave: number;

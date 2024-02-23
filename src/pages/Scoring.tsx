@@ -1,10 +1,19 @@
 import { useEffect, useMemo, useState } from "react";
 import useWindowSize from "../data/WindowSize";
-import { Form, Image, InputGroup } from "react-bootstrap";
+import { Button, Form, Image, InputGroup } from "react-bootstrap";
 import scoring_img from "../img/scoring.png";
 import IncrementableButton from "../components/IncrementableButton";
-import CountableButton from "../components/CountableButton";
-import { db, getBlueAlliance, getBlueScore, getRedAlliance, getRedScore, setBlueAlliance, setBlueScore, setRedAlliance, setRedScore, sumScore } from "../firebase";
+import { db,
+  getBlueAlliance,
+  getBlueScore,
+  getRedAlliance,
+  getRedScore,
+  setBlueAlliance,
+  setBlueScore,
+  setRedAlliance,
+  setRedScore,
+  sumScore,
+} from "../firebase";
 import { BlueAlliance, RedAlliance, Score } from "../data/Types";
 import { doc, onSnapshot } from "firebase/firestore";
 
@@ -51,14 +60,21 @@ export default () => {
     setBlueAlliance({...bluealliance, [key]: value} as BlueAlliance);
   }
 
-  const changeBlueScore = (key: string, value: string) => {
+  const changeBlueScore = (key: string, value: number) => {
     setBluescore({...bluescore, [key]: value} as Score);
     setBlueScore({...bluescore, [key]: value} as Score)
   }
 
-  const changeRedScore = (key: string, value: string) => {
+  const changeRedScore = (key: string, value: number) => {
     setRedscore({...redscore, [key]: value} as Score);
     setRedScore({...redscore, [key]: value} as Score)
+  }
+
+  const resetMatch = () => {
+    setBlueScore({"autospeaker": 0, "leave": 0, "autoamp": 0, "speaker": 0, "speakeramplified": 0, "amp": 0, "stage": 0} as Score);
+    setRedScore({"autospeaker": 0, "leave": 0, "autoamp": 0, "speaker": 0, "speakeramplified": 0, "amp": 0, "stage": 0} as Score);
+    setBlueAlliance({blue1: "", blue2: "", blue3: ""} as BlueAlliance);
+    setRedAlliance({red1: "", red2: "", red3: ""} as RedAlliance);
   }
 
   return (
@@ -67,28 +83,28 @@ export default () => {
 
       { bluescore !== undefined &&
       <>
-        <IncrementableButton keyd="autospeaker" update={changeBlueScore} defaultValue={bluescore?.autospeaker ? bluescore.autospeaker : 0} label="Auto Speaker" increment={5} scale={scale} style={{position: "absolute", width: 200 * scale, top: 150 * scale, left: 100 * scale}} />
-        <IncrementableButton keyd="leave" update={changeBlueScore} defaultValue={bluescore?.leave ? bluescore.leave : 0} label="Leave" increment={2} scale={scale} style={{position: "absolute", width: 200 * scale, top: 150 * scale, left: 375 * scale}} />
-        <IncrementableButton keyd="autoamp" update={changeBlueScore} defaultValue={bluescore?.autoamp ? bluescore.autoamp : 0} label="Auto Amp" increment={2} scale={scale} style={{position: "absolute", width: 200 * scale, top: 150 * scale, left: 650 * scale}} />
+        <IncrementableButton keyd="autospeaker" score={bluescore} update={changeBlueScore} defaultValue={bluescore?.autospeaker ? bluescore.autospeaker : 0} label="Auto Speaker" increment={5} scale={scale} style={{position: "absolute", width: 200 * scale, top: 150 * scale, left: 100 * scale}} />
+        <IncrementableButton keyd="leave" score={bluescore} update={changeBlueScore} defaultValue={bluescore?.leave ? bluescore.leave : 0} label="Leave" increment={2} scale={scale} style={{position: "absolute", width: 200 * scale, top: 150 * scale, left: 375 * scale}} />
+        <IncrementableButton keyd="autoamp" score={bluescore} update={changeBlueScore} defaultValue={bluescore?.autoamp ? bluescore.autoamp : 0} label="Auto Amp" increment={2} scale={scale} style={{position: "absolute", width: 200 * scale, top: 150 * scale, left: 650 * scale}} />
       
-        <IncrementableButton keyd="speaker" update={changeBlueScore} defaultValue={bluescore?.speaker ? bluescore.speaker : 0} label="Speaker" increment={2} scale={scale} style={{position: "absolute", width: 200 * scale, top: 460 * scale, left: 100 * scale}} />
-        <IncrementableButton keyd="speakeramplified" update={changeBlueScore} defaultValue={bluescore?.speakeramplified ? bluescore.speakeramplified : 0} label="Speaker (Amplified)" increment={5} scale={scale} style={{position: "absolute", width: 200 * scale, top: 460 * scale, left: 375 * scale}} />
-        <IncrementableButton keyd="amp" update={changeBlueScore} defaultValue={bluescore?.amp ? bluescore.amp : 0} label="Amp" increment={1} scale={scale} style={{position: "absolute", width: 200 * scale, top: 460 * scale, left: 650 * scale}} />
+        <IncrementableButton keyd="speaker" score={bluescore} update={changeBlueScore} defaultValue={bluescore?.speaker ? bluescore.speaker : 0} label="Speaker" increment={2} scale={scale} style={{position: "absolute", width: 200 * scale, top: 460 * scale, left: 100 * scale}} />
+        <IncrementableButton keyd="speakeramplified" score={bluescore} update={changeBlueScore} defaultValue={bluescore?.speakeramplified ? bluescore.speakeramplified : 0} label="Speaker (Amplified)" increment={5} scale={scale} style={{position: "absolute", width: 200 * scale, top: 460 * scale, left: 375 * scale}} />
+        <IncrementableButton keyd="amp" score={bluescore} update={changeBlueScore} defaultValue={bluescore?.amp ? bluescore.amp : 0} label="Amp" increment={1} scale={scale} style={{position: "absolute", width: 200 * scale, top: 460 * scale, left: 650 * scale}} />
 
-        <IncrementableButton keyd="stage" update={changeBlueScore} defaultValue={bluescore?.stage ? bluescore.stage : 0} label="Stage Points" increment={1} scale={scale} style={{position: "absolute", width: 200 * scale, top: 700 * scale, left: 375 * scale}} />
+        <IncrementableButton keyd="stage" score={bluescore} update={changeBlueScore} defaultValue={bluescore?.stage ? bluescore.stage : 0} label="Stage Points" increment={1} scale={scale} style={{position: "absolute", width: 200 * scale, top: 700 * scale, left: 375 * scale}} />
         </>
       }
       { redscore !== undefined &&
       <>
-        <IncrementableButton keyd="autospeaker" update={changeRedScore} defaultValue={redscore?.autospeaker ? redscore.autospeaker : 0} label="Auto Speaker" increment={5} scale={scale} style={{position: "absolute", width: 200 * scale, top: 150 * scale, right: 100 * scale}} />
-        <IncrementableButton keyd="leave" update={changeRedScore} defaultValue={redscore?.leave ? redscore.leave : 0} label="Leave" increment={2} scale={scale} style={{position: "absolute", width: 200 * scale, top: 150 * scale, right: 375 * scale}} />
-        <IncrementableButton keyd="autoamp" update={changeRedScore} defaultValue={redscore?.autoamp ? redscore.autoamp : 0} label="Auto Amp" increment={2} scale={scale} style={{position: "absolute", width: 200 * scale, top: 150 * scale, right: 650 * scale}} />
+        <IncrementableButton keyd="autospeaker" score={redscore} update={changeRedScore} defaultValue={redscore?.autospeaker ? redscore.autospeaker : 0} label="Auto Speaker" increment={5} scale={scale} style={{position: "absolute", width: 200 * scale, top: 150 * scale, right: 100 * scale}} />
+        <IncrementableButton keyd="leave" score={redscore} update={changeRedScore} defaultValue={redscore?.leave ? redscore.leave : 0} label="Leave" increment={2} scale={scale} style={{position: "absolute", width: 200 * scale, top: 150 * scale, right: 375 * scale}} />
+        <IncrementableButton keyd="autoamp" score={redscore} update={changeRedScore} defaultValue={redscore?.autoamp ? redscore.autoamp : 0} label="Auto Amp" increment={2} scale={scale} style={{position: "absolute", width: 200 * scale, top: 150 * scale, right: 650 * scale}} />
 
-        <IncrementableButton keyd="speaker" update={changeRedScore} defaultValue={redscore?.speaker ? redscore.speaker : 0} label="Speaker" increment={2} scale={scale} style={{position: "absolute", width: 200 * scale, top: 460 * scale, right: 100 * scale}} />
-        <IncrementableButton keyd="speakeramplified" update={changeRedScore} defaultValue={redscore?.speakeramplified ? redscore.speakeramplified : 0} label="Speaker (Amplified)" increment={5} scale={scale} style={{position: "absolute", width: 200 * scale, top: 460 * scale, right: 375 * scale}} />
-        <IncrementableButton keyd="amp" update={changeRedScore} defaultValue={redscore?.amp ? redscore.amp : 0} label="Amp" increment={1} scale={scale} style={{position: "absolute", width: 200 * scale, top: 460 * scale, right: 650 * scale}} />
+        <IncrementableButton keyd="speaker" score={redscore} update={changeRedScore} defaultValue={redscore?.speaker ? redscore.speaker : 0} label="Speaker" increment={2} scale={scale} style={{position: "absolute", width: 200 * scale, top: 460 * scale, right: 100 * scale}} />
+        <IncrementableButton keyd="speakeramplified" score={redscore} update={changeRedScore} defaultValue={redscore?.speakeramplified ? redscore.speakeramplified : 0} label="Speaker (Amplified)" increment={5} scale={scale} style={{position: "absolute", width: 200 * scale, top: 460 * scale, right: 375 * scale}} />
+        <IncrementableButton keyd="amp" score={redscore} update={changeRedScore} defaultValue={redscore?.amp ? redscore.amp : 0} label="Amp" increment={1} scale={scale} style={{position: "absolute", width: 200 * scale, top: 460 * scale, right: 650 * scale}} />
 
-        <IncrementableButton keyd="stage" update={changeRedScore} defaultValue={redscore?.stage ? redscore.stage : 0} label="Stage Points" increment={1} scale={scale} style={{position: "absolute", width: 200 * scale, top: 700 * scale, right: 375 * scale}} />
+        <IncrementableButton keyd="stage" score={redscore} update={changeRedScore} defaultValue={redscore?.stage ? redscore.stage : 0} label="Stage Points" increment={1} scale={scale} style={{position: "absolute", width: 200 * scale, top: 700 * scale, right: 375 * scale}} />
       </>
       }
       <InputGroup size="sm" style={{width: 150 * scale, position: "absolute", left: 460 * scale, top: 916 * scale}}>
@@ -135,14 +151,7 @@ export default () => {
         />
       </InputGroup>
 
-      <CountableButton startingCount={30} scale={scale} style={{
-        position: "absolute",
-        left: 860 * scale,
-        top: 905 * scale,
-        fontSize: 80 * scale,
-        textAlign: "center",
-        width: 200 * scale,
-      }}/>
+      <Button onClick={() => resetMatch()} style={{position: "absolute", left: 890 * scale, top: 954 * scale, fontSize: 20 * scale, width: 140 * scale}}>Reset Match</Button>
 
       <p className="score" style={{top: 905 * scale, left: 700 * scale, fontSize: 80 * scale, textAlign: "center"}}>{sumScore(bluescore)}</p>
       <p className="score" style={{top: 905 * scale, right: 730 * scale, fontSize: 80 * scale, textAlign: "center"}}>{sumScore(redscore)}</p>
