@@ -4,7 +4,8 @@ import winner_img from "../img/winner.png";
 import { Image } from "react-bootstrap";
 import useWindowSize from "../data/WindowSize";
 import { BlueAlliance, RedAlliance, Score } from "../data/Types";
-import { getBlueAlliance, getBlueScore, getRedAlliance, getRedScore } from "../firebase";
+import { db, getBlueAlliance, getBlueScore, getRedAlliance, getRedScore, sumScore } from "../firebase";
+import { doc, onSnapshot } from "firebase/firestore";
 
 export default () => {
   const [bluealliance, setBluealliance] = useState<BlueAlliance>();
@@ -20,22 +21,30 @@ export default () => {
     getRedAlliance().then(redalliance => setRedalliance(redalliance));
     getBlueScore().then(bluescore => setBluescore(bluescore));
     getRedScore().then(redscore => setRedscore(redscore));
+
+    onSnapshot(doc(db, "scoreboard", "bluescore"), (doc) => {
+      setBluescore(doc.data() as Score);
+    });
+    onSnapshot(doc(db, "scoreboard", "redscore"), (doc) => {
+      setRedscore(doc.data() as Score);
+    });
+    onSnapshot(doc(db, "scoreboard", "bluealliance"), (doc) => {
+      setBluealliance(doc.data() as BlueAlliance);
+    });
+    onSnapshot(doc(db, "scoreboard", "redalliance"), (doc) => {
+      setRedalliance(doc.data() as RedAlliance);
+    });
   }, []);
 
   useEffect(() => {
     setScale(size.width / 1920);
   }, [size.width]);
 
-  const sumScore = (score: Score | undefined): number => {
-    if (score) return score.leave + score.speaker + score.amp + score.stage + score.penalty;
-    return 0;
-  }
-
   return (
     <>
       <Image src={template_img} style={{width: size.width}}/>
 
-      <Image src={winner_img} style={{position: "absolute", right: 0, width: size.width / 3.2, top: size.width / 20}}/>
+      {/* <Image src={winner_img} style={{position: "absolute", right: 0, width: size.width / 3.2, top: size.width / 20}}/> */}
 
       <p className="qual-info" style={{fontSize: 50 * scale}}>Texas Torque Week 0</p>
 
@@ -51,16 +60,16 @@ export default () => {
       <p className="team-number" style={{right: size.width * .22, fontSize: 35 * scale, top: size.width * .3265}}>{bluealliance?.blue3}</p>
 
       <p className="stat" style={{right: size.width / 2 + 255 * scale, fontSize: 35 * scale, top: size.width * .171, width: 104 * scale}}>{redscore?.leave}</p>
-      <p className="stat" style={{right: size.width / 2 + 255 * scale, fontSize: 35 * scale, top: size.width * .2095, width: 104 * scale}}>{redscore?.speaker}</p>
-      <p className="stat" style={{right: size.width / 2 + 255 * scale, fontSize: 35 * scale, top: size.width * .248, width: 104 * scale}}>{redscore?.amp}</p>
+      <p className="stat" style={{right: size.width / 2 + 255 * scale, fontSize: 35 * scale, top: size.width * .2095, width: 104 * scale}}>{(redscore?.speaker ? redscore.speaker : 0) + (redscore?.autospeaker ? redscore.autospeaker : 0) + (redscore?.speakeramplified ? redscore.speakeramplified : 0)}</p>
+      <p className="stat" style={{right: size.width / 2 + 255 * scale, fontSize: 35 * scale, top: size.width * .248, width: 104 * scale}}>{(redscore?.amp ? redscore.amp : 0) + (redscore?.autoamp ? redscore.autoamp : 0)}</p>
       <p className="stat" style={{right: size.width / 2 + 255 * scale, fontSize: 35 * scale, top: size.width * .2875, width: 104 * scale}}>{redscore?.stage}</p>
-      <p className="stat" style={{right: size.width / 2 + 255 * scale, fontSize: 35 * scale, top: size.width * .3265, width: 104 * scale}}>{redscore?.penalty}</p>
+      <p className="stat" style={{right: size.width / 2 + 255 * scale, fontSize: 35 * scale, top: size.width * .3265, width: 104 * scale}}>0</p>
 
       <p className="stat" style={{left: size.width / 2 + 255 * scale, fontSize: 35 * scale, top: size.width * .171, width: 104 * scale}}>{bluescore?.leave}</p>
-      <p className="stat" style={{left: size.width / 2 + 255 * scale, fontSize: 35 * scale, top: size.width * .2095, width: 104 * scale}}>{bluescore?.speaker}</p>
-      <p className="stat" style={{left: size.width / 2 + 255 * scale, fontSize: 35 * scale, top: size.width * .248, width: 104 * scale}}>{bluescore?.amp}</p>
+      <p className="stat" style={{left: size.width / 2 + 255 * scale, fontSize: 35 * scale, top: size.width * .2095, width: 104 * scale}}>{(bluescore?.speaker ? bluescore.speaker : 0) + (bluescore?.autospeaker ? bluescore.autospeaker : 0) + (bluescore?.speakeramplified ? bluescore.speakeramplified : 0)}</p>
+      <p className="stat" style={{left: size.width / 2 + 255 * scale, fontSize: 35 * scale, top: size.width * .248, width: 104 * scale}}>{(bluescore?.amp ? bluescore.amp : 0) + (bluescore?.autoamp ? bluescore.autoamp : 0)}</p>
       <p className="stat" style={{left: size.width / 2 + 255 * scale, fontSize: 35 * scale, top: size.width * .2875, width: 104 * scale}}>{bluescore?.stage}</p>
-      <p className="stat" style={{left: size.width / 2 + 255 * scale, fontSize: 35 * scale, top: size.width * .3265, width: 104 * scale}}>{bluescore?.penalty}</p>
+      <p className="stat" style={{left: size.width / 2 + 255 * scale, fontSize: 35 * scale, top: size.width * .3265, width: 104 * scale}}>0</p>
     </>
   )
 }
