@@ -4,7 +4,8 @@ import winner_img from "../img/winner.png";
 import { Image } from "react-bootstrap";
 import useWindowSize from "../data/WindowSize";
 import { BlueAlliance, RedAlliance, Score } from "../data/Types";
-import { getBlueAlliance, getBlueScore, getRedAlliance, getRedScore } from "../firebase";
+import { db, getBlueAlliance, getBlueScore, getRedAlliance, getRedScore } from "../firebase";
+import { doc, onSnapshot } from "firebase/firestore";
 
 export default () => {
   const [bluealliance, setBluealliance] = useState<BlueAlliance>();
@@ -30,6 +31,19 @@ export default () => {
     if (score) return score.leave + score.speaker + score.amp + score.stage + score.penalty;
     return 0;
   }
+
+  onSnapshot(doc(db, "scoreboard", "bluescore"), (doc) => {
+    setBluescore(doc.data() as Score);
+  });
+  onSnapshot(doc(db, "scoreboard", "redscore"), (doc) => {
+    setRedscore(doc.data() as Score);
+  });
+  onSnapshot(doc(db, "scoreboard", "bluealliance"), (doc) => {
+    setBluealliance(doc.data() as BlueAlliance);
+  });
+  onSnapshot(doc(db, "scoreboard", "redalliance"), (doc) => {
+    setRedalliance(doc.data() as RedAlliance);
+  });
 
   return (
     <>
