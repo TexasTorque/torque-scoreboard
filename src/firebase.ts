@@ -49,3 +49,13 @@ export const setBlueAlliance = async (bluealliance: BlueAlliance | undefined) =>
   const ref = doc(db, "scoreboard", "bluealliance");
   await setDoc(ref, bluealliance);
 }
+
+export const setBlueScore = async (bluescore: Score) => {
+  const ref = doc(db, "scoreboard", "bluescore");
+  await setDoc(ref, bluescore);
+}
+
+export const setRedScore = async (redscore: Score) => {
+  const ref = doc(db, "scoreboard", "redscore");
+  await setDoc(ref, redscore);
+}

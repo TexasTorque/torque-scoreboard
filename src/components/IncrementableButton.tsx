@@ -1,16 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 
 interface IncrementableButtonProps {
   label: string;
   increment: number;
   scale: number;
+  keyd: string;
   defaultValue: number;
+  update: Function;
   style: React.CSSProperties;
 }
 
 export default (props: IncrementableButtonProps) => {
   const [count, setCount] = useState<number>(props.defaultValue);
+
+  useEffect(() => {
+    console.log(props);
+    props.update(props.keyd, count);
+  }, [count]);
 
   return (
     <>

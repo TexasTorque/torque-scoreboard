@@ -21,30 +21,30 @@ export default () => {
     getRedAlliance().then(redalliance => setRedalliance(redalliance));
     getBlueScore().then(bluescore => setBluescore(bluescore));
     getRedScore().then(redscore => setRedscore(redscore));
+
+    onSnapshot(doc(db, "scoreboard", "bluescore"), (doc) => {
+      setBluescore(doc.data() as Score);
+    });
+    onSnapshot(doc(db, "scoreboard", "redscore"), (doc) => {
+      setRedscore(doc.data() as Score);
+    });
+    onSnapshot(doc(db, "scoreboard", "bluealliance"), (doc) => {
+      setBluealliance(doc.data() as BlueAlliance);
+    });
+    onSnapshot(doc(db, "scoreboard", "redalliance"), (doc) => {
+      setRedalliance(doc.data() as RedAlliance);
+    });
   }, []);
 
   useEffect(() => {
     setScale(size.width / 1920);
   }, [size.width]);
 
-  onSnapshot(doc(db, "scoreboard", "bluescore"), (doc) => {
-    setBluescore(doc.data() as Score);
-  });
-  onSnapshot(doc(db, "scoreboard", "redscore"), (doc) => {
-    setRedscore(doc.data() as Score);
-  });
-  onSnapshot(doc(db, "scoreboard", "bluealliance"), (doc) => {
-    setBluealliance(doc.data() as BlueAlliance);
-  });
-  onSnapshot(doc(db, "scoreboard", "redalliance"), (doc) => {
-    setRedalliance(doc.data() as RedAlliance);
-  });
-
   return (
     <>
       <Image src={template_img} style={{width: size.width}}/>
 
-      <Image src={winner_img} style={{position: "absolute", right: 0, width: size.width / 3.2, top: size.width / 20}}/>
+      {/* <Image src={winner_img} style={{position: "absolute", right: 0, width: size.width / 3.2, top: size.width / 20}}/> */}
 
       <p className="qual-info" style={{fontSize: 50 * scale}}>Texas Torque Week 0</p>
 
