@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
+import { Score } from "../data/Types";
 
 interface IncrementableButtonProps {
   label: string;
@@ -7,6 +8,7 @@ interface IncrementableButtonProps {
   scale: number;
   keyd: string;
   defaultValue: number;
+  score: Score;
   update: Function;
   style: React.CSSProperties;
 }
@@ -17,6 +19,10 @@ export default (props: IncrementableButtonProps) => {
   useEffect(() => {
     props.update(props.keyd, count);
   }, [count]);
+
+  useEffect(() => {
+    setCount(props.score[props.keyd]);
+  }, [props.score]);
 
   return (
     <>
