@@ -46,7 +46,7 @@ export default () => {
 
       {/* <Image src={winner_img} style={{position: "absolute", right: 0, width: size.width / 3.2, top: size.width / 20}}/> */}
 
-      <p className="qual-info" style={{fontSize: 50 * scale}}>Texas Torque Week 0</p>
+      <p className="qual-info" style={{fontSize: 50 * scale}}>Week 0</p>
 
       <p className="score" style={{top: size.width * .07, right: "50%", fontSize: 125 * scale, width: 240 / 1280 * size.width}}>{sumScore(redscore)}</p>
       <p className="score" style={{top: size.width * .07, left: "50%", fontSize: 125 * scale, width: 240 / 1280 * size.width}}>{sumScore(bluescore)}</p>
